@@ -1,8 +1,8 @@
 <?php
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'sistema_herramientas');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_USER', 'sist_herr');
+define('DB_PASS', 'password123');
 define('DB_CHARSET', 'utf8mb4');
 
 function getDB() {
