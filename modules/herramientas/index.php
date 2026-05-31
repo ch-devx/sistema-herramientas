@@ -43,7 +43,10 @@ $categorias = $db->query('SELECT * FROM categorias ORDER BY nombre ASC')->fetchA
             <h2>Herramientas</h2>
             <p>Inventario completo de equipos y herramientas.</p>
         </div>
-        <a href="/sistema-herramientas/modules/herramientas/crear.php" class="btn btn-primary">+ Nueva herramienta</a>
+        <a href="/sistema-herramientas/modules/herramientas/crear.php" class="btn btn-primary">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nueva herramienta
+        </a>
     </div>
 </div>
 
@@ -63,8 +66,8 @@ $categorias = $db->query('SELECT * FROM categorias ORDER BY nombre ASC')->fetchA
             <label>Estado</label>
             <select name="estado">
                 <option value="">Todos</option>
-                <option value="disponible"  <?= $filtro_estado === 'disponible'    ? 'selected' : '' ?>>Disponible</option>
-                <option value="prestada"    <?= $filtro_estado === 'prestada'      ? 'selected' : '' ?>>Prestada</option>
+                <option value="disponible"    <?= $filtro_estado === 'disponible'    ? 'selected' : '' ?>>Disponible</option>
+                <option value="prestada"      <?= $filtro_estado === 'prestada'      ? 'selected' : '' ?>>Prestada</option>
                 <option value="mantenimiento" <?= $filtro_estado === 'mantenimiento' ? 'selected' : '' ?>>Mantenimiento</option>
             </select>
         </div>
@@ -79,7 +82,10 @@ $categorias = $db->query('SELECT * FROM categorias ORDER BY nombre ASC')->fetchA
                 <?php endforeach; ?>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <button type="submit" class="btn btn-primary">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Filtrar
+        </button>
         <a href="/sistema-herramientas/modules/herramientas/index.php" class="btn btn-secondary">Limpiar</a>
     </form>
 </div>
