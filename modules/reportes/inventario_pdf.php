@@ -4,7 +4,7 @@ requireLogin();
 require_once '../../config/db.php';
 
 // Autoload de Composer (mPDF)
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema-herramientas/vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 $db = getDB();
 
