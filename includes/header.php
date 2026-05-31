@@ -16,7 +16,6 @@
         <button class="hamburger" id="hbg" onclick="toggleSidebar()" aria-label="Menú">
             <span></span><span></span><span></span>
         </button>
-        <span class="sb-brand">SistemaHerr.</span>
     </div>
     <nav class="sb-links">
         <a href="/sistema-herramientas/dashboard.php" class="sb-link <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : '' ?>">
