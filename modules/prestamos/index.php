@@ -24,7 +24,10 @@ $activos = $db->query('
             <h2>Préstamos activos</h2>
             <p>Herramientas actualmente fuera del inventario.</p>
         </div>
-        <a href="/sistema-herramientas/modules/prestamos/crear.php" class="btn btn-primary">+ Registrar préstamo</a>
+        <a href="/sistema-herramientas/modules/prestamos/crear.php" class="btn btn-primary">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Registrar préstamo
+        </a>
     </div>
 </div>
 
