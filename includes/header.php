@@ -16,6 +16,7 @@
         <button class="hamburger" id="hbg" onclick="toggleSidebar()" aria-label="Menú">
             <span></span><span></span><span></span>
         </button>
+        <span class="sb-brand">SistemaHerr.</span>
     </div>
     <nav class="sb-links">
         <a href="/sistema-herramientas/dashboard.php" class="sb-link <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : '' ?>">
@@ -54,21 +55,34 @@
 <!-- CONTENIDO -->
 <div class="main-content" id="main-content">
     <div class="topbar">
-        <span class="topbar-label"><?php
-            $labels = [
-                'dashboard'   => 'Dashboard',
-                'herramientas'=> 'Herramientas',
-                'trabajadores'=> 'Trabajadores',
-                'prestamos'   => 'Préstamos',
-                'historial'   => 'Historial',
-                'categorias'  => 'Categorías',
-            ];
-            $self = $_SERVER['PHP_SELF'];
-            $label = 'Sistema';
-            foreach ($labels as $key => $val) {
-                if (strpos($self, $key) !== false) { $label = $val; break; }
-            }
-            echo $label;
-        ?></span>
+        <div class="topbar-left">
+            <?php
+                $pages = [
+                    'dashboard'    => ['section' => 'Sistema', 'page' => 'Inicio'],
+                    'herramientas' => ['section' => 'Inventario', 'page' => 'Herramientas'],
+                    'trabajadores' => ['section' => 'Personal', 'page' => 'Trabajadores'],
+                    'prestamos'    => ['section' => 'Operaciones', 'page' => 'Préstamos'],
+                    'historial'    => ['section' => 'Operaciones', 'page' => 'Historial'],
+                    'categorias'   => ['section' => 'Inventario', 'page' => 'Categorías'],
+                ];
+                $self    = $_SERVER['PHP_SELF'];
+                $section = 'Sistema';
+                $page    = 'Inicio';
+                foreach ($pages as $key => $val) {
+                    if (strpos($self, $key) !== false) {
+                        $section = $val['section'];
+                        $page    = $val['page'];
+                        break;
+                    }
+                }
+            ?>
+            <span class="topbar-section"><?= $section ?></span>
+            <span class="topbar-sep">/</span>
+            <span class="topbar-page"><?= $page ?></span>
+        </div>
+        <div class="topbar-user">
+            <div class="topbar-avatar"><?= mb_substr($_SESSION['usuario_nombre'] ?? 'U', 0, 1) ?></div>
+            <span class="topbar-username"><?= htmlspecialchars($_SESSION['usuario_nombre'] ?? '') ?></span>
+        </div>
     </div>
     <main class="container">
