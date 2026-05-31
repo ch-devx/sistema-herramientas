@@ -6,9 +6,9 @@ require_once 'includes/header.php';
 
 $db = getDB();
 
-$total       = $db->query('SELECT COUNT(*) FROM herramientas WHERE activo = 1')->fetchColumn();
-$disponibles = $db->query("SELECT COUNT(*) FROM herramientas WHERE estado = 'disponible' AND activo = 1")->fetchColumn();
-$prestadas   = $db->query("SELECT COUNT(*) FROM herramientas WHERE estado = 'prestada' AND activo = 1")->fetchColumn();
+$total         = $db->query('SELECT COUNT(*) FROM herramientas WHERE activo = 1')->fetchColumn();
+$disponibles   = $db->query("SELECT COUNT(*) FROM herramientas WHERE estado = 'disponible' AND activo = 1")->fetchColumn();
+$prestadas     = $db->query("SELECT COUNT(*) FROM herramientas WHERE estado = 'prestada' AND activo = 1")->fetchColumn();
 $mantenimiento = $db->query("SELECT COUNT(*) FROM herramientas WHERE estado = 'mantenimiento' AND activo = 1")->fetchColumn();
 
 $ultimos = $db->query('
@@ -51,27 +51,39 @@ $ultimos = $db->query('
 <!-- Accesos rápidos -->
 <div class="accesos-grid">
     <a href="/sistema-herramientas/modules/herramientas/crear.php" class="acceso-card">
-        <div class="acceso-icon">🔧</div>
+        <div class="acceso-icon">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
         <div class="acceso-label">Registrar herramienta</div>
     </a>
     <a href="/sistema-herramientas/modules/prestamos/crear.php" class="acceso-card">
-        <div class="acceso-icon">📤</div>
+        <div class="acceso-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </div>
         <div class="acceso-label">Registrar préstamo</div>
     </a>
     <a href="/sistema-herramientas/modules/prestamos/index.php" class="acceso-card">
-        <div class="acceso-icon">📋</div>
+        <div class="acceso-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
         <div class="acceso-label">Ver préstamos activos</div>
     </a>
     <a href="/sistema-herramientas/modules/trabajadores/crear.php" class="acceso-card">
-        <div class="acceso-icon">👤</div>
+        <div class="acceso-icon">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        </div>
         <div class="acceso-label">Registrar trabajador</div>
     </a>
     <a href="/sistema-herramientas/modules/historial/por_herramienta.php" class="acceso-card">
-        <div class="acceso-icon">📂</div>
+        <div class="acceso-icon">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
         <div class="acceso-label">Historial por herramienta</div>
     </a>
     <a href="/sistema-herramientas/modules/historial/por_trabajador.php" class="acceso-card">
-        <div class="acceso-icon">👥</div>
+        <div class="acceso-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
         <div class="acceso-label">Historial por trabajador</div>
     </a>
 </div>
