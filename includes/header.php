@@ -81,7 +81,7 @@
             <span class="topbar-page"><?= $page ?></span>
         </div>
         <div class="topbar-user">
-            <div class="topbar-avatar"><?= mb_substr($_SESSION['usuario_nombre'] ?? 'U', 0, 1) ?></div>
+            <div class="topbar-avatar"><?= substr($_SESSION['usuario_nombre'] ?? 'U', 0, 1) ?></div>
             <span class="topbar-username"><?= htmlspecialchars($_SESSION['usuario_nombre'] ?? '') ?></span>
         </div>
     </div>
