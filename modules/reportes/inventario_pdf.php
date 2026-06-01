@@ -132,6 +132,7 @@ $html .= '</tbody></table>
 
 // ─── Generar PDF ─────────────────────────────────────────────
 $mpdf = new \Mpdf\Mpdf([
+    'tempDir'       => '/tmp/mpdf',
     'margin_top'    => 15,
     'margin_bottom' => 15,
     'margin_left'   => 15,
