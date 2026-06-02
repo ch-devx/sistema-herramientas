@@ -34,18 +34,34 @@ La carpeta del proyecto debe quedar en:
 C:\xampp\htdocs\sistema-herramientas\
 ```
 
-### 3. Instalar dependencias PHP
+### 3. Instalar Composer
 
-El módulo de reportes PDF requiere la librería mPDF. Con [Composer](https://getcomposer.org) instalado, ejecuta dentro de la carpeta del proyecto:
+Composer es el gestor de dependencias de PHP que se necesita para instalar mPDF (librería de reportes PDF).
+
+1. Descarga el instalador desde https://getcomposer.org/Composer-Setup.exe y ejecútalo.
+2. El instalador detectará automáticamente el PHP de XAMPP. Si no lo hace, apúntalo manualmente a:
+   ```
+   C:\xampp\php\php.exe
+   ```
+3. Completa la instalación con las opciones por defecto.
+4. Abre una terminal nueva (CMD o PowerShell) y verifica que quedó instalado correctamente:
+   ```bash
+   composer --version
+   ```
+   Deberías ver algo como `Composer version 2.x.x`.
+
+### 4. Instalar dependencias PHP
+
+Con Composer instalado, ejecuta dentro de la carpeta del proyecto:
 
 ```bash
 cd C:\xampp\htdocs\sistema-herramientas
 composer install
 ```
 
-Esto creará la carpeta `vendor/` con todas las dependencias necesarias.
+Esto creará la carpeta `vendor/` con la librería mPDF y todo lo que necesita para funcionar.
 
-### 4. Crear la base de datos y el usuario
+### 5. Crear la base de datos y el usuario
 
 1. Abre el **XAMPP Control Panel** y haz clic en **Start** en Apache y MySQL.
 2. Abre tu navegador y entra a: `http://localhost/phpmyadmin`
@@ -63,7 +79,7 @@ GRANT ALL PRIVILEGES ON sistema_herramientas.* TO 'sist_herr'@'127.0.0.1';
 FLUSH PRIVILEGES;
 ```
 
-### 5. Verificar la configuración
+### 6. Verificar la configuración
 
 El archivo de configuración de la base de datos está en `config/db.php` con los siguientes valores por defecto:
 
