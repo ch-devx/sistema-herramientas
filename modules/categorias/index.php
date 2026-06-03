@@ -31,15 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
     $id = (int)($_POST['id'] ?? 0);
     if ($id > 0) {
         try {
-            // Desvincular herramientas que usen esta categoría (activas o dadas de baja)
-            $stmt = $db->prepare('UPDATE herramientas SET categoria_id = NULL WHERE categoria_id = ?');
-            $stmt->execute([$id]);
-
             $stmt = $db->prepare('DELETE FROM categorias WHERE id = ?');
             $stmt->execute([$id]);
             $msg = ['tipo' => 'success', 'texto' => 'Categoría eliminada.'];
         } catch (PDOException $e) {
-            $msg = ['tipo' => 'error', 'texto' => 'Error al eliminar: ' . $e->getMessage()];
+            $msg = ['tipo' => 'error', 'texto' => 'No se puede eliminar: está en uso por alguna herramienta.'];
         }
     }
 }
@@ -75,14 +71,13 @@ require_once '../../includes/header.php';
 
     <!-- Tabla -->
     <div class="section">
-        <h3>Categorías registradas (<?= count($categorias) ?>)</h3>
+        <h3>Categorías registradas</h3>
         <?php if (empty($categorias)): ?>
             <p class="empty-msg">No hay categorías registradas aún.</p>
         <?php else: ?>
             <table class="tabla">
                 <thead>
                     <tr>
-                        <th>#</th>
                         <th>Nombre</th>
                         <th>Acción</th>
                     </tr>
@@ -90,7 +85,6 @@ require_once '../../includes/header.php';
                 <tbody>
                     <?php foreach ($categorias as $cat): ?>
                     <tr>
-                        <td><?= $cat['id'] ?></td>
                         <td><?= htmlspecialchars($cat['nombre']) ?></td>
                         <td>
                             <form method="POST" style="display:inline;" data-validate>
