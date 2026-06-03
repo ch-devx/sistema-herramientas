@@ -7,7 +7,7 @@ $db = getDB();
 $id = (int)($_GET['id'] ?? 0);
 
 if ($id > 0) {
-    // Verificar préstamos activos
+    // Bloquear si tiene préstamos activos (herramienta aún fuera)
     $stmt = $db->prepare("
         SELECT COUNT(*) FROM prestamos
         WHERE trabajador_id = ? AND cerrado = 0
@@ -18,10 +18,14 @@ if ($id > 0) {
         exit;
     }
 
-    // Verificar historial de préstamos cerrados
+    // Bloquear solo si tiene historial vinculado a herramientas que aún existen
     $stmt = $db->prepare("
-        SELECT COUNT(*) FROM prestamos
-        WHERE trabajador_id = ? AND cerrado = 1
+        SELECT COUNT(*)
+        FROM prestamos p
+        JOIN herramientas h ON p.herramienta_id = h.id
+        WHERE p.trabajador_id = ?
+          AND p.cerrado = 1
+          AND h.activo = 1
     ");
     $stmt->execute([$id]);
     if ($stmt->fetchColumn() > 0) {
@@ -29,7 +33,10 @@ if ($id > 0) {
         exit;
     }
 
-    // Sin préstamos de ningún tipo: eliminación segura
+    // Sin trazabilidad relevante: eliminar préstamos huérfanos y luego al trabajador
+    $stmt = $db->prepare('DELETE FROM prestamos WHERE trabajador_id = ?');
+    $stmt->execute([$id]);
+
     $stmt = $db->prepare('DELETE FROM trabajadores WHERE id = ?');
     $stmt->execute([$id]);
 }
