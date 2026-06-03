@@ -7,7 +7,7 @@ require_once '../../includes/header.php';
 $db = getDB();
 
 $trabajadores = $db->query('
-    SELECT * FROM trabajadores ORDER BY activo DESC, nombre ASC
+    SELECT * FROM trabajadores ORDER BY nombre ASC
 ')->fetchAll();
 ?>
 
@@ -26,8 +26,12 @@ $trabajadores = $db->query('
 </div>
 <div id="sin-resultados">No se encontraron resultados para tu búsqueda.</div>
 
-<?php if (($_GET['error'] ?? '') === 'tiene_prestamo'): ?>
-    <div class="alert alert-error">No se puede desactivar un trabajador que tiene herramientas prestadas actualmente.</div>
+<?php if (($_GET['error'] ?? '') === 'tiene_prestamo_activo'): ?>
+    <div class="alert alert-error">No se puede eliminar un trabajador con préstamos activos. Registra la devolución primero.</div>
+<?php elseif (($_GET['error'] ?? '') === 'tiene_historial'): ?>
+    <div class="alert alert-error">No se puede eliminar este trabajador porque tiene préstamos registrados en el historial. Sus registros deben conservarse para trazabilidad.</div>
+<?php elseif (($_GET['msg'] ?? '') === 'eliminado_ok'): ?>
+    <div class="alert alert-success">Trabajador eliminado correctamente.</div>
 <?php endif; ?>
 
 <div class="section">
@@ -40,7 +44,6 @@ $trabajadores = $db->query('
                     <th>Nombre</th>
                     <th>Cédula</th>
                     <th>Cargo</th>
-                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -50,18 +53,11 @@ $trabajadores = $db->query('
                     <td><?= htmlspecialchars($t['nombre']) ?></td>
                     <td><?= htmlspecialchars($t['cedula']) ?></td>
                     <td><?= htmlspecialchars($t['cargo'] ?? '—') ?></td>
-                    <td>
-                        <?php if ($t['activo']): ?>
-                            <span class="badge badge-green">Activo</span>
-                        <?php else: ?>
-                            <span class="badge badge-gray">Inactivo</span>
-                        <?php endif; ?>
-                    </td>
                     <td class="actions">
-                        <a href="/sistema-herramientas/modules/trabajadores/editar.php?id=<?= $t['id'] ?>" class="btn btn-secondary btn-sm">Editar</a>
-                        <a href="/sistema-herramientas/modules/trabajadores/toggle.php?id=<?= $t['id'] ?>" class="btn btn-sm <?= $t['activo'] ? 'btn-danger' : 'btn-success' ?> confirm-delete">
-                            <?= $t['activo'] ? 'Desactivar' : 'Activar' ?>
-                        </a>
+                        <a href="/sistema-herramientas/modules/trabajadores/editar.php?id=<?= $t['id'] ?>"
+                           class="btn btn-secondary btn-sm">Editar</a>
+                        <a href="/sistema-herramientas/modules/trabajadores/eliminar.php?id=<?= $t['id'] ?>"
+                           class="btn btn-danger btn-sm confirm-delete">Eliminar</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
