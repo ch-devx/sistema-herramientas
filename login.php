@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="login-body">
 <div class="login-card">
-    <div class="login-icon">⚙️</div>
     <h1>Sistema de Herramientas</h1>
     <p class="login-sub">Ingresa tus credenciales para continuar</p>
     <?php if ($error): ?>
