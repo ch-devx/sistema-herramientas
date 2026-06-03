@@ -61,12 +61,13 @@
         <div class="topbar-left">
             <?php
                 $pages = [
-                    'dashboard'    => ['section' => 'Sistema', 'page' => 'Inicio'],
-                    'herramientas' => ['section' => 'Inventario', 'page' => 'Herramientas'],
-                    'trabajadores' => ['section' => 'Personal', 'page' => 'Trabajadores'],
-                    'prestamos'    => ['section' => 'Operaciones', 'page' => 'Préstamos'],
-                    'historial'    => ['section' => 'Operaciones', 'page' => 'Historial'],
-                    'categorias'   => ['section' => 'Inventario', 'page' => 'Categorías'],
+                    'dashboard'        => ['section' => 'Sistema',     'page' => 'Inicio'],
+                    '/herramientas/'   => ['section' => 'Inventario',  'page' => 'Herramientas'],
+                    '/trabajadores/'   => ['section' => 'Personal',    'page' => 'Trabajadores'],
+                    '/prestamos/'      => ['section' => 'Operaciones', 'page' => 'Préstamos'],
+                    '/historial/'      => ['section' => 'Operaciones', 'page' => 'Historial'],
+                    '/categorias/'     => ['section' => 'Inventario',  'page' => 'Categorías'],
+                    '/reportes/'       => ['section' => 'Reportes',    'page' => 'Inventario'],
                 ];
                 $self    = $_SERVER['PHP_SELF'];
                 $section = 'Sistema';
