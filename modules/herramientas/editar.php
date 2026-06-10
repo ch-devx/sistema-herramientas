@@ -100,24 +100,33 @@ require_once '../../includes/header.php';
             </select>
         </div>
 
-        <!-- ESTADO: solo lectura, gestionado por módulo de préstamos -->
+        <!-- ESTADO: editable solo desde mantenimiento -->
         <div class="form-group">
             <label>Estado</label>
-            <?php
-                $badges = [
-                    'disponible'    => 'badge-green',
-                    'prestada'      => 'badge-yellow',
-                    'mantenimiento' => 'badge-red',
-                ];
-                $clase = $badges[$h['estado']] ?? 'badge-gray';
-            ?>
-            <div style="margin-top:0.35rem;">
-                <span class="badge <?= $clase ?>"><?= ucfirst($h['estado']) ?></span>
-            </div>
-            <small style="color:var(--text-light); font-size:0.82rem;">
-                El estado se gestiona automáticamente desde el módulo de Préstamos.
-            </small>
-            <input type="hidden" name="estado" value="<?= htmlspecialchars($h['estado']) ?>">
+            <?php if ($h['estado'] === 'mantenimiento'): ?>
+                <select id="estado" name="estado">
+                    <option value="mantenimiento" <?= $h['estado'] === 'mantenimiento' ? 'selected' : '' ?>>Mantenimiento</option>
+                    <option value="disponible">Disponible</option>
+                </select>
+                <small style="color:var(--text-light); font-size:0.82rem;">
+                    Cambia a "Disponible" una vez completado el mantenimiento.
+                </small>
+            <?php else: ?>
+                <?php
+                    $badges = [
+                        'disponible' => 'badge-green',
+                        'prestada'   => 'badge-yellow',
+                    ];
+                    $clase = $badges[$h['estado']] ?? 'badge-gray';
+                ?>
+                <div style="margin-top:0.35rem;">
+                    <span class="badge <?= $clase ?>"><?= ucfirst($h['estado']) ?></span>
+                </div>
+                <small style="color:var(--text-light); font-size:0.82rem;">
+                    El estado se gestiona automáticamente desde el módulo de Préstamos.
+                </small>
+                <input type="hidden" name="estado" value="<?= htmlspecialchars($h['estado']) ?>">
+            <?php endif; ?>
         </div>
 
         <div class="form-group">
