@@ -93,7 +93,6 @@ require_once '../../includes/header.php';
             <select id="estado_devolucion" name="estado_devolucion" required>
                 <option value="">— Selecciona el estado —</option>
                 <option value="bueno"         <?= ($_POST['estado_devolucion'] ?? '') === 'bueno'          ? 'selected' : '' ?>>Bueno</option>
-                <option value="con_desgaste"  <?= ($_POST['estado_devolucion'] ?? '') === 'con_desgaste'   ? 'selected' : '' ?>>Con desgaste</option>
                 <option value="mantenimiento" <?= ($_POST['estado_devolucion'] ?? '') === 'mantenimiento'  ? 'selected' : '' ?>>Requiere mantenimiento</option>
             </select>
             <small style="color:var(--text-light); font-size:0.82rem;">
