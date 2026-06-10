@@ -93,54 +93,81 @@ Contraseña: password
 sistema-herramientas/
 │
 ├── config/
-│   └── db.php                  # Configuración de conexión a la base de datos
+│   └── db.php                      # Configuración de conexión a la base de datos
 │
 ├── includes/
-│   ├── auth.php                # Verificación de sesión activa
-│   ├── header.php              # Navbar y apertura HTML
-│   └── footer.php              # Cierre HTML
+│   ├── auth.php                    # Verificación de sesión activa
+│   ├── header.php                  # Sidebar, topbar y apertura HTML
+│   └── footer.php                  # Cierre HTML y script de sidebar
 │
 ├── modules/
-│   ├── herramientas/           # Inventario: registro, edición, baja
-│   ├── trabajadores/           # Catálogo de personal
-│   ├── prestamos/              # Registro de préstamos y devoluciones
-│   ├── historial/              # Consulta de movimientos por herramienta o trabajador
-│   ├── categorias/             # Gestión de categorías de herramientas
-│   └── reportes/               # Generación de reportes en PDF
+│   ├── herramientas/
+│   │   ├── index.php               # Listado con filtros por estado y categoría
+│   │   ├── crear.php               # Formulario de registro
+│   │   ├── editar.php              # Formulario de edición
+│   │   └── baja.php                # Baja lógica (activo = 0)
+│   │
+│   ├── trabajadores/
+│   │   ├── index.php               # Listado de personal
+│   │   ├── crear.php               # Formulario de registro
+│   │   ├── editar.php              # Formulario de edición
+│   │   └── eliminar.php            # Eliminación con validación de trazabilidad
+│   │
+│   ├── prestamos/
+│   │   ├── index.php               # Listado de préstamos activos
+│   │   ├── crear.php               # Registro de préstamo con bloqueo transaccional
+│   │   └── devolver.php            # Registro de devolución y actualización de estado
+│   │
+│   ├── historial/
+│   │   ├── por_herramienta.php     # Movimientos de una herramienta específica
+│   │   └── por_trabajador.php      # Movimientos de un trabajador específico
+│   │
+│   ├── categorias/
+│   │   └── index.php               # Gestión de categorías (crear y eliminar)
+│   │
+│   └── reportes/
+│       ├── reporte_inventario.php  # Formulario de filtros para el reporte
+│       └── inventario_pdf.php      # Generación del PDF con mPDF
 │
 ├── assets/
-│   ├── css/style.css           # Estilos del sistema
-│   └── js/main.js              # Validaciones y búsqueda en tiempo real
+│   ├── css/style.css               # Estilos del sistema
+│   └── js/main.js                  # Confirmaciones, validaciones y búsqueda en tiempo real
 │
 ├── database/
-│   └── schema.sql              # Script SQL para crear la base de datos
+│   └── schema.sql                  # Script SQL para crear la base de datos
 │
-├── vendor/                     # Dependencias Composer (generado por composer install)
-├── composer.json               # Definición de dependencias PHP
-├── login.php                   # Pantalla de inicio de sesión
-├── logout.php                  # Cierre de sesión
-├── dashboard.php               # Pantalla principal con resumen y accesos rápidos
-└── README.md                   # Este archivo
+├── vendor/                         # Dependencias Composer (generado por composer install)
+├── composer.json                   # Definición de dependencias PHP
+├── login.php                       # Pantalla de inicio de sesión
+├── logout.php                      # Cierre de sesión
+├── dashboard.php                   # Pantalla principal con resumen y accesos rápidos
+└── README.md                       # Este archivo
 ```
 
 ---
 
 ## Funcionalidades
 
-- **Inventario de herramientas** — registro, edición y baja lógica con filtros por estado y categoría
-- **Catálogo de trabajadores** — registro y gestión del personal que solicita herramientas
-- **Préstamos** — registro del ciclo completo: préstamo → devolución con actualización automática de estado
-- **Historial** — consulta de movimientos por herramienta o por trabajador
-- **Reportes PDF** — generación de reporte de inventario con filtros, exportado vía mPDF
-- **Dashboard** — resumen en tiempo real con contadores y accesos rápidos
-- **Autenticación** — sesión protegida con usuario y contraseña
+- **Inventario de herramientas** — registro, edición y baja lógica con filtros por estado y categoría. La baja establece `activo = 0`; el registro se conserva en la base de datos para mantener el historial completo.
+- **Catálogo de trabajadores** — registro, edición y eliminación del personal. La eliminación es permanente pero está sujeta a las reglas de trazabilidad descritas más abajo.
+- **Categorías** — gestión de categorías de herramientas (crear y eliminar). No es posible eliminar una categoría que esté asignada a alguna herramienta activa.
+- **Préstamos** — registro del ciclo completo: préstamo → devolución. Al registrar un préstamo, la herramienta pasa a estado `prestada`; al devolver, regresa a `disponible` o pasa a `mantenimiento` según la condición indicada en la devolución.
+- **Historial** — consulta de movimientos filtrada por herramienta o por trabajador, con detalle de estado de devolución y observaciones.
+- **Reportes PDF** — generación de reporte de inventario con filtros por estado y categoría, exportado vía mPDF.
+- **Dashboard** — resumen en tiempo real con contadores por estado y accesos rápidos a las operaciones principales.
+- **Autenticación** — sesión protegida con usuario y contraseña.
 
 ---
 
 ## Notas técnicas
 
 - El sistema corre íntegramente en red local. No requiere conexión a internet.
-- El estado de las herramientas (`disponible`, `prestada`, `mantenimiento`) es gestionado automáticamente por el módulo de préstamos y no puede modificarse manualmente.
-- Las bajas de herramientas y la desactivación de trabajadores son lógicas: los registros se conservan en la base de datos para mantener el historial completo.
-- No es posible dar de baja una herramienta ni desactivar un trabajador que tenga un préstamo activo abierto.
-- La carpeta `vendor/` es generada por Composer y está excluida del repositorio vía `.gitignore`.
+- El estado de las herramientas (`disponible`, `prestada`, `mantenimiento`) es gestionado automáticamente por el módulo de préstamos y no puede modificarse manualmente desde el formulario de edición.
+- Al registrar una devolución con estado **"Requiere mantenimiento"**, la herramienta queda en estado `mantenimiento` y no estará disponible para nuevos préstamos hasta que se edite manualmente su estado.
+- **Baja de herramientas:** es lógica (`activo = 0`). No es posible dar de baja una herramienta con un préstamo activo abierto. El historial de préstamos asociado se conserva.
+- **Eliminación de trabajadores:** es permanente y está sujeta a dos validaciones:
+  1. No se puede eliminar un trabajador con préstamos activos (herramienta aún fuera del inventario).
+  2. No se puede eliminar un trabajador que tenga historial de préstamos vinculado a herramientas que aún existen en el sistema, para preservar la trazabilidad.
+  - Si el trabajador solo tiene historial vinculado a herramientas ya dadas de baja (registros huérfanos), la eliminación procede y esos registros se eliminan junto con el trabajador.
+- El registro de préstamos utiliza una transacción con bloqueo (`SELECT ... FOR UPDATE`) para evitar condiciones de carrera en entornos con múltiples usuarios simultáneos.
+- La carpeta `vendor/` y el archivo `composer.lock` son generados por Composer y están excluidos del repositorio vía `.gitignore`.
